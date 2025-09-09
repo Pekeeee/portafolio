@@ -563,89 +563,91 @@ export default function HomePage() {
       <div className="hr container-max" />
 
       {/* ===== PROYECTOS ===== */}
-      <section id="proyectos" className="section">
-        <div className="container-max">
-          <h2 className="h2 mb-8">Proyectos</h2>
+     {/* ===== PROYECTOS ===== */}
+<section id="proyectos" className="section">
+  <div className="container-max">
+    <h2 className="h2 mb-8">Proyectos</h2>
 
-          {/* Estilos del carril */}
-          <style>{`
-            @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-            .projects-viewport { overflow: hidden; }
-            .projects-track {
-              display:flex; gap:1.25rem; will-change: transform;
-              width: max-content;               /* se expande al ancho real del contenido */
-            }
-            .projects-track.marquee { animation: marquee-x 28s linear infinite; }
-            .projects-track.marquee:hover { animation-play-state: paused; }
-            .project-card { flex: 0 0 auto; }   /* evita que las cards se encojan */
-            @media (prefers-reduced-motion: reduce){ .projects-track.marquee { animation: none; } }
-          `}</style>
+    <style>{`
+      @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+      .projects-viewport { overflow: hidden; }
+      .projects-track { display:flex; gap:1.25rem; will-change: transform; }
+      .projects-track.marquee { animation: marquee-x 18s linear infinite; }
+      .projects-track.marquee:hover { animation-play-state: paused; }
+      @media (prefers-reduced-motion: reduce){ .projects-track.marquee { animation: none; } }
+    `}</style>
 
-          {(() => {
-            const item = (dir: 'left' | 'right') => ({
-              hidden: { opacity: 0, y: -200, x: dir === 'left' ? -340 : 340, rotate: dir === 'left' ? -18 : 18, scale: 0.86 },
-              show: { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1, transition: { duration: 1.0, ease: 'easeOut' } },
-            })
+    {(() => {
+      const item = (dir: 'left' | 'right') => ({
+        hidden: { opacity: 0, y: -200, x: dir === 'left' ? -340 : 340, rotate: dir === 'left' ? -18 : 18, scale: 0.86 },
+        show:   { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1, transition: { duration: 1.0, ease: "easeOut" } }
+      })
 
-            const [marquee, setMarquee] = useState(false)
-            const loop = [...projects, ...projects] // duplicado para scroll infinito sin cortes
+      const [marquee, setMarquee] = useState(false)
+      const loop = [...projects, ...projects]
 
-            return (
-              <div className="projects-viewport">
-                <motion.div
-                  className={`projects-track ${marquee ? 'marquee' : ''}`}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.3 }}
-                  onViewportEnter={() => {
-                    setTimeout(() => setMarquee(true), 1800)
-                  }}
-                >
-                  {loop.map((p, i) => (
-                    <motion.article
-                      key={`${p.title}-${i}`}
-                      variants={item(i % 2 === 0 ? 'left' : 'right')}
-                      className="project project-card overflow-hidden"
-                      style={{ minWidth: 'min(520px, 92vw)' }}
-                    >
-                      {/* Imagen / Header */}
-                      <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
-                        {p.image ? (
-                          <Image src={p.image} alt={p.title} fill className="object-cover" priority={i < 2} />
-                        ) : (
-                          <div className="absolute inset-0 bg-[linear-gradient(135deg,#0b0e12,#10151b)]" />
-                        )}
-                      </div>
+      // 👇 Observar el VIEWPORT (no el track enorme)
+      const viewRef = useRef<HTMLDivElement>(null)
+      const inView = useInView(viewRef, { once: true, amount: 0.2 })
 
-                      {/* Contenido */}
-                      <div className="p-5 space-y-3">
-                        <h3 className="font-semibold text-lg">{p.title}</h3>
-                        <p className="text-sm muted leading-relaxed">{p.description}</p>
-                        <div className="flex flex-wrap gap-2">
-                          {p.stack.map((s) => (
-                            <span key={s} className="tag">
-                              {s}
-                            </span>
-                          ))}
-                        </div>
+      useEffect(() => {
+        if (inView) {
+          const t = setTimeout(() => setMarquee(true), 1800)
+          return () => clearTimeout(t)
+        }
+      }, [inView])
 
-                        {/* Acciones inferiores */}
-                        <div className="pt-1 flex gap-4 items-center">
-                          {(p.demo || p.github) && (
-                            <a href={p.demo || p.github} target="_blank" rel="noreferrer" className="btn btn-primary">
-                              Ver
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    </motion.article>
-                  ))}
-                </motion.div>
-              </div>
-            )
-          })()}
+      return (
+        <div className="projects-viewport" ref={viewRef}>
+          <motion.div
+            className={`projects-track ${marquee ? 'marquee' : ''}`}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}   // 👈 En lugar de whileInView en el track
+          >
+            {loop.map((p, i) => (
+              <motion.article
+                key={`${p.title}-${i}`}
+                variants={item(i % 2 === 0 ? 'left' : 'right')}
+                className="project overflow-hidden"
+                style={{ minWidth: 'min(520px, 92vw)' }}
+              >
+                <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
+                  {/* Si añades imagen: 
+                  {p.image && (
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 92vw, 520px"
+                      priority={i < 2} // opcional
+                    />
+                  )} */}
+                </div>
+
+                <div className="p-5 space-y-3">
+                  <h3 className="font-semibold text-lg">{p.title}</h3>
+                  <p className="text-sm muted leading-relaxed">{p.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {p.stack.map(s => <span key={s} className="tag">{s}</span>)}
+                  </div>
+                  <div className="pt-1 flex gap-4 items-center">
+                    {(p.demo || p.github) && (
+                      <a href={p.demo || p.github} target="_blank" rel="noreferrer" className="btn btn-primary">
+                        Ver
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
         </div>
-      </section>
+      )
+    })()}
+  </div>
+</section>
+
 
       <div className="hr container-max" />
 
