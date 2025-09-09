@@ -93,16 +93,8 @@ const projects: Project[] = [
 const clients: Client[] = [
   { name: 'AMADTECH', url: 'https://amadtechstore.com', logo: '/clients/amadtech.png' },
   { name: 'Casseg Ingenieria', url: 'https://cassegingenieria.com/', logo: '/clients/casseg.png' },
-  { name: 'Amad Software Solutions', url: 'https://amadsoftwaresolutions.com/', logo: '/clients/amadsoft.png' },
   { name: 'CHOP CHOP', url: 'https://chopchop.com/', logo: '/clients/chopchop.png' },
-  { name: 'Click&Go', url: '#', logo: '/clients/clickgo.svg' },
-  { name: 'MetrikAI', url: '#', logo: '/clients/metrikai.svg' },
-  { name: 'BlueMarket', url: '#', logo: '/clients/bluemarket.svg' },
-  { name: 'Finetly', url: '#', logo: '/clients/finetly.svg' },
-  { name: 'Horus Logistics', url: '#', logo: '/clients/horus.svg' },
-  { name: 'Urbex MX', url: '#', logo: '/clients/urbex.svg' },
-  { name: 'NovaMedical', url: '#', logo: '/clients/novamedical.svg' },
-  { name: 'QubeSoft', url: '#', logo: '/clients/qubesoft.svg' },
+
 ]
 
 // (si lo llegas a usar más adelante)
