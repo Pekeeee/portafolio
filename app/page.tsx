@@ -562,19 +562,33 @@ export default function HomePage() {
       <div className="hr container-max" />
 
       {/* ===== PROYECTOS ===== */}
-     {/* ===== PROYECTOS ===== */}
 <section id="proyectos" className="section">
   <div className="container-max">
     <h2 className="h2 mb-8">Proyectos</h2>
 
-    <style>{`
-      @keyframes marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-      .projects-viewport { overflow: hidden; }
-      .projects-track { display:flex; gap:1.25rem; will-change: transform; }
-      .projects-track.marquee { animation: marquee-x 18s linear infinite; }
-      .projects-track.marquee:hover { animation-play-state: paused; }
-      @media (prefers-reduced-motion: reduce){ .projects-track.marquee { animation: none; } }
-    `}</style>
+   <style>{`
+  .projects-viewport{ overflow:hidden; }
+  .projects-track{ display:flex; gap:0; will-change:transform; }
+  .projects-group{ display:flex; gap:1.25rem; }
+
+  /* ⇩ Velocidad por breakpoint (más lenta) */
+  :root{ --marquee-speed: 28s; }               /* desktop */
+  @media (min-width:641px) and (max-width:1024px){ :root{ --marquee-speed: 22s; } }  /* tablet */
+  @media (max-width:640px){ :root{ --marquee-speed: 28s; } }                          /* móvil */
+
+  .projects-track.marquee{
+    animation: marquee-x var(--marquee-speed, 28s) linear infinite;
+  }
+  .projects-track.marquee:hover{ animation-play-state:paused; }
+
+  @keyframes marquee-x{
+    to{ transform: translateX(calc(-1 * var(--shift, 0px))); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .projects-track.marquee{ animation:none; }
+  }
+`}</style>
 
     {(() => {
       const item = (dir: 'left' | 'right') => ({
@@ -583,73 +597,119 @@ export default function HomePage() {
       })
 
       const [marquee, setMarquee] = useState(false)
-      const loop = [...projects, ...projects]
+      const loop = [...projects]  // un set; lo duplicamos en el DOM con dos grupos
 
-      // 👇 Observar el VIEWPORT (no el track enorme)
       const viewRef = useRef<HTMLDivElement>(null)
-      const inView = useInView(viewRef, { once: true, amount: 0.2 })
+      const inView  = useInView(viewRef, { once: true, amount: 0.2 })
+
+      // medir ancho real del grupo A
+      const groupRef = useRef<HTMLDivElement>(null)
+      const [shift, setShift] = useState(0)
+      useEffect(() => {
+        const recalc = () => setShift(groupRef.current?.scrollWidth ?? 0)
+        recalc()
+        const ro = new ResizeObserver(recalc)
+        if (groupRef.current) ro.observe(groupRef.current)
+        return () => ro.disconnect()
+      }, [])
 
       useEffect(() => {
-        if (inView) {
-          const t = setTimeout(() => setMarquee(true), 1800)
+        if (inView && shift > 0) {
+          const t = setTimeout(() => setMarquee(true), 800) // pequeño delay al entrar
           return () => clearTimeout(t)
         }
-      }, [inView])
+      }, [inView, shift])
 
       return (
         <div className="projects-viewport" ref={viewRef}>
           <motion.div
             className={`projects-track ${marquee ? 'marquee' : ''}`}
             initial="hidden"
-            animate={inView ? 'show' : 'hidden'}   // 👈 En lugar de whileInView en el track
+            animate={inView ? 'show' : 'hidden'}
+            style={{ ['--shift' as any]: `${shift}px` }}  // animar exactamente un grupo
           >
-            {loop.map((p, i) => (
-              <motion.article
-                key={`${p.title}-${i}`}
-                variants={item(i % 2 === 0 ? 'left' : 'right')}
-                className="project overflow-hidden"
-                style={{ minWidth: 'min(520px, 92vw)' }}
-              >
-                <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
-                 <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
-  {p.image && (
-    <Image
-      src={p.image}
-      alt={p.title}
-      fill
-      className="object-cover"
-      // importante para <Image fill />
-      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 520px, 520px"
-      priority={i < 2}   // opcional: carga prioritaria de las 2 primeras
-    />
-  )}
-</div>
-
-                </div>
-
-                <div className="p-5 space-y-3">
-                  <h3 className="font-semibold text-lg">{p.title}</h3>
-                  <p className="text-sm muted leading-relaxed">{p.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {p.stack.map(s => <span key={s} className="tag">{s}</span>)}
-                  </div>
-                  <div className="pt-1 flex gap-4 items-center">
-                    {(p.demo || p.github) && (
-                      <a href={p.demo || p.github} target="_blank" rel="noreferrer" className="btn btn-primary">
-                        Ver
-                      </a>
+            {/* Grupo A (referencia de ancho) */}
+            <div className="projects-group" ref={groupRef}>
+              {loop.map((p, i) => (
+                <motion.article
+                  key={`A-${p.title}-${i}`}
+                  variants={item(i % 2 === 0 ? 'left' : 'right')}
+                  className="project overflow-hidden"
+                  style={{ minWidth: 'min(520px, 92vw)' }}
+                >
+                  <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
+                    {p.image && (
+                      <Image
+                        src={p.image}
+                        alt={p.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 520px, 520px"
+                        priority={i < 2}
+                      />
                     )}
                   </div>
-                </div>
-              </motion.article>
-            ))}
+
+                  <div className="p-5 space-y-3">
+                    <h3 className="font-semibold text-lg">{p.title}</h3>
+                    <p className="text-sm muted leading-relaxed">{p.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {p.stack.map(s => <span key={s} className="tag">{s}</span>)}
+                    </div>
+                    <div className="pt-1 flex gap-4 items-center">
+                      {(p.demo || p.github) && (
+                        <a href={p.demo || p.github} target="_blank" rel="noreferrer" className="btn btn-primary">
+                          Ver
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+
+            {/* Grupo B (clon) */}
+            <div className="projects-group" aria-hidden="true">
+              {loop.map((p, i) => (
+                <article
+                  key={`B-${p.title}-${i}`}
+                  className="project overflow-hidden"
+                  style={{ minWidth: 'min(520px, 92vw)' }}
+                >
+                  <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
+                    {p.image && (
+                      <Image
+                        src={p.image}
+                        alt={p.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 92vw, (max-width: 1024px) 520px, 520px"
+                      />
+                    )}
+                  </div>
+                  <div className="p-5 space-y-3">
+                    <h3 className="font-semibold text-lg">{p.title}</h3>
+                    <p className="text-sm muted leading-relaxed">{p.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {p.stack.map(s => <span key={s} className="tag">{s}</span>)}
+                    </div>
+                    <div className="pt-1 flex gap-4 items-center">
+                      {(p.demo || p.github) && (
+                        <a href={p.demo || p.github} target="_blank" rel="noreferrer" className="btn btn-primary">
+                          Ver
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </motion.div>
         </div>
       )
     })()}
   </div>
 </section>
-
 
       <div className="hr container-max" />
 
