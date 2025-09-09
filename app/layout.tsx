@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Alejandro Daniel González Acosta — Portafolio',
+  title: 'Alejandro AMAD — Portafolio',
   description: 'Desarrollo Web, E-commerce, HUD FiveM, Sistemas a medida.',
 }
 

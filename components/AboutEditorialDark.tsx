@@ -9,7 +9,7 @@ export default function AboutEditorialDark() {
         <div className="mb-12 flex items-end justify-between gap-6">
           <div>
             <p className="text-xs tracking-widest text-neutral-400 uppercase">
-              Alejandro Daniel González Acosta
+              Alejandro AMAD
             </p>
             <h1 className="mt-2 text-4xl font-semibold leading-tight tracking-tight lg:text-5xl">
               Diseño sistemas claros. <span className="font-normal text-neutral-400">Sin ruido.</span>

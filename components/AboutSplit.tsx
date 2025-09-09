@@ -7,7 +7,7 @@ export default function AboutSplit() {
         {/* Encabezado */}
         <header className="mb-12">
           <p className="text-xs tracking-widest text-neutral-400 uppercase">
-            Alejandro Daniel González Acosta
+            Alejandro AMAD
           </p>
           <h1 className="mt-2 text-4xl font-semibold leading-tight tracking-tight lg:text-5xl">
             Construyo software claro para problemas reales.

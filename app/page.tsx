@@ -147,7 +147,7 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 navbar border-b border-[var(--line)]">
         <nav className="container-max h-16 flex items-center justify-between">
           <Link href="#inicio" className="font-semibold">
-            Alejandro <span style={{ color: 'var(--accent)' }}>DG</span>
+            Alejandro <span style={{ color: 'var(--accent)' }}>AMAD</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#tecnologias" className="navlink">Tecnologías</a>
@@ -176,8 +176,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.05 }}
             >
-              Alejandro Daniel <br className="hidden sm:block" />
-              <span className="underline-anim reveal">González Acosta</span>
+              Alejandro AMAD <br className="hidden sm:block" />
             </motion.h1>
 
             <motion.p
@@ -698,7 +697,7 @@ export default function HomePage() {
 
       <footer className="py-12 border-t border-[var(--line)]">
         <div className="container-max flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm muted">© {new Date().getFullYear()} Alejandro Daniel González Acosta</p>
+          <p className="text-sm muted">© {new Date().getFullYear()} Alejandro AMAD</p>
           <div className="flex gap-4 text-sm">
             <a href="#tecnologias" className="navlink">Tecnologías</a>
             <a href="#clientes" className="navlink">Clientes</a>

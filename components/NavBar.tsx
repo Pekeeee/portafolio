@@ -20,7 +20,7 @@ export default function NavBar() {
   return (
     <header className={`sticky top-0 z-50 bg-white ${shadow ? 'border-b border-border' : ''}`}>
       <nav className="container-max h-16 flex items-center justify-between">
-        <a href="#inicio" className="font-semibold">Alejandro <span className="text-accent">DG</span></a>
+        <a href="#inicio" className="font-semibold">Alejandro <span className="text-accent">AMAD</span></a>
         <div className="hidden md:flex items-center gap-8 text-sm">
           {items.map(i => (
             <a key={i.href} href={i.href} className="hover:text-accent transition-colors">{i.label}</a>
