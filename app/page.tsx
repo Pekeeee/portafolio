@@ -609,13 +609,20 @@ export default function HomePage() {
                       style={{ minWidth: 'min(520px, 92vw)' }}
                     >
                       {/* Imagen / Header */}
-                      <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
-                        {p.image ? (
-                          <Image src={p.image} alt={p.title} fill className="object-cover" priority={i < 2} />
-                        ) : (
-                          <div className="absolute inset-0 bg-[linear-gradient(135deg,#0b0e12,#10151b)]" />
-                        )}
-                      </div>
+                     <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
+  {p.image && (
+    <Image
+      src={p.image}
+      alt={p.title}
+      fill
+      className="object-cover"
+      // 👇 importante para que Next calcule el layout y no colapse a 0px
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 520px"
+      priority={i < 3} // opcional: prioriza los 3 primeros
+    />
+  )}
+</div>
+
 
                       {/* Contenido */}
                       <div className="p-5 space-y-3">
