@@ -612,17 +612,20 @@ export default function HomePage() {
                 style={{ minWidth: 'min(520px, 92vw)' }}
               >
                 <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
-                  {/* Si añades imagen: 
-                  {p.image && (
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 92vw, 520px"
-                      priority={i < 2} // opcional
-                    />
-                  )} */}
+                 <div className="relative aspect-[16/9] border-b border-[var(--line)] bg-[#0b0e12]">
+  {p.image && (
+    <Image
+      src={p.image}
+      alt={p.title}
+      fill
+      className="object-cover"
+      // importante para <Image fill />
+      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 520px, 520px"
+      priority={i < 2}   // opcional: carga prioritaria de las 2 primeras
+    />
+  )}
+</div>
+
                 </div>
 
                 <div className="p-5 space-y-3">
