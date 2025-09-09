@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================================
+   TOKENS — Tema oscuro + acento cian
+   (SOLO UN :root)
+   ================================ */
+:root{
+  --bg: #0d0f12;          /* fondo principal (UNICO) */
+  --card: #14171c;        /* tarjetas / bloques */
+  --surface: #101318;     /* superficies sutiles (navbar) */
+  --ink: #eef2f7;         /* texto principal */
+  --muted: #9aa3ad;       /* texto secundario */
+  --line: rgba(255,255,255,0.10);  /* bordes/lineas suaves */
+  --accent: #00deff;      /* COLOR ACENTO */
+  --accent-600: #00c7e6;  /* hover */
+  --accent-700: #00b0cc;  /* active */
+}
+
+html, body{
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Sora', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Contenedor con respiración */
+.container-max{ @apply max-w-[1120px] mx-auto px-5 md:px-8; }
+
+/* Secciones */
+.section{ @apply py-16 md:py-24; }
+
+/* Regla mínima */
+.hr{ border-top: 1px solid var(--line); }
+
+/* Tipografía */
+.h1{ @apply text-5xl md:text-6xl font-semibold leading-[1.05] tracking-[-0.01em]; }
+.h2{ @apply text-3xl md:text-4xl font-semibold tracking-[-0.01em]; }
+.lead{ color: var(--muted); @apply text-base md:text-lg leading-relaxed; }
+.kicker{ color: var(--accent); @apply text-[12px] font-semibold tracking-[0.18em] uppercase; }
+
+/* Botones */
+.btn{ @apply inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition-colors; }
+.btn-primary{ background: var(--accent); color: #051018; }
+.btn-primary:hover{ background: var(--accent-600); }
+.btn-primary:active{ background: var(--accent-700); }
+
+.btn-ghost{
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.btn-ghost:hover{ background: rgba(0,222,255,0.10); }
+
+/* Chips / tags */
+.tag{
+  border:1px solid var(--line);
+  background: rgba(255,255,255,0.02);
+  color: var(--ink);
+  @apply text-xs px-3 py-1 rounded-md;
+}
+
+/* Tarjetas y proyectos */
+.card{
+  background: var(--card);
+  border:1px solid var(--line);
+  @apply rounded-xl;
+}
+
+.project{
+  @apply rounded-xl;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+.project:hover{ border-color: rgba(255,255,255,0.18); }
+
+/* Navegación */
+.navbar{
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.navlink{ @apply text-sm transition-colors; color: color-mix(in oklab, var(--ink) 78%, transparent); }
+.navlink:hover{ color: var(--accent); }
+
+/* Utilidades pequeñas */
+.muted{ color: var(--muted); }
+
+/* ===== Proyectos: carril auto-desplazable ===== */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.projects-viewport { overflow: hidden; }
+.projects-track {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+}
+.projects-track.marquee { animation: marquee-x 28s linear infinite; }
+.projects-track.marquee:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .projects-track.marquee { animation: none; }
+}
+
+/* ---- HERO minimalista ---- */
+.hero-wrap { position: relative; isolation: isolate; overflow-x: clip; }
+.hero-grid {
+  background-image:
+    radial-gradient(60% 60% at 100% 0%, color-mix(in oklab, var(--accent) 10%, white) 0%, rgba(0,0,0,0) 60%),
+    radial-gradient(70% 70% at 0% 100%, color-mix(in oklab, #10b981 10%, white) 0%, rgba(0,0,0,0) 65%),
+    linear-gradient(0deg, rgba(0,0,0,.02), rgba(0,0,0,.02));
+}
+.hero-orb {
+  position: absolute;
+  top: -12%;
+  right: -6%;
+  width: min(44rem, 70vw);
+  height: min(44rem, 70vw);
+  filter: blur(70px);
+  opacity: .22;
+  background: radial-gradient(circle, color-mix(in oklab, var(--accent) 70%, white) 0%, rgba(0,0,0,0) 60%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* micro underline animado */
+.underline-anim{
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size .6s ease;
+}
+.underline-anim.reveal { background-size: 100% 2px; }
+
+/* pill chips */
+.pill{
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .45rem .65rem;
+  font-size: .85rem;
+  background: rgba(255,255,255,0.03);
+}
+
+/* Stats */
+.stat{ display:flex; gap:.5rem; align-items:baseline; }
+.stat strong{ font-size: clamp(1.6rem, 2vw + 1rem, 2.25rem); line-height: 1; }
+.stat small{ color: var(--muted); }
+
+/* --- Pila de rocas (chips) --- */
+.pile        { position: relative; display:flex; flex-direction:column; align-items:center; }
+.pile-row    { display:flex; gap:1rem; padding:.4rem .6rem; }
+.pile-row:not(:first-child){ margin-top:-26px; } /* superposición */
+
+.pebble{
+  --bd:rgba(255,255,255,.14);
+  display:inline-flex; align-items:center; gap:.55rem;
+  border:1px solid var(--bd);
+  border-radius:16px;
+  padding:.7rem 1rem;
+  font-size:1.05rem;
+  line-height:1;
+  position:relative;
+  background: rgba(255,255,255,0.04);
+  color: var(--ink);
+  box-shadow: 0 10px 24px rgba(0,0,0,.45);
+  transform: translateZ(0);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+  will-change: transform;
+}
+.pebble::after{
+  content:""; position:absolute; left:12%; right:12%; bottom:-10px; height:12px;
+  border-radius:999px; filter:blur(8px); background:rgba(0,0,0,.6); z-index:-1;
+}
+.pebble:hover{ transform:translateY(-4px); box-shadow:0 16px 36px rgba(0,0,0,.6); }
+
+.pebble-icon{
+  width:28px; height:28px; border-radius:999px; display:grid; place-items:center;
+  font-size:.82rem; font-weight:700; color:#001016;
+  background: color-mix(in oklab, var(--accent) 65%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 10px rgba(0,222,255,.22);
+  border: 1px solid rgba(255,255,255,.35);
+}
+
+/* Tarjeta con borde “neón” pulsante */
+.glow-card{
+  position: relative;
+  border-radius: 16px;
+  background: color-mix(in oklab, white 2%, black);
+  border: 1px solid color-mix(in oklab, var(--accent) 18%, var(--line));
+  overflow: hidden;
+  isolation: isolate;
+}
+.glow-card::before{
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from 0deg, color-mix(in oklab, var(--accent) 92%, white) 0%, transparent 60%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: spin-border 8s linear infinite;
+  opacity: .8;
+  pointer-events: none;
+}
+.glow-card::after{
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at center, color-mix(in oklab, var(--accent) 26%, transparent) 0, transparent 60%);
+  filter: blur(16px);
+  opacity: .25;
+  animation: pulse-glow 2.8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes spin-border { to { transform: rotate(1turn); } }
+@keyframes pulse-glow  { 0%,100%{ opacity:.15 } 50%{ opacity:.35 } }
+
+/* Avatar (si lo usas) */
+.avatar-ring{
+  position: relative;
+  width: 144px; height: 144px;
+  border-radius: 999px; display: grid; place-items: center;
+  background: #0e1317; color: #fff; font-weight: 800; font-size: 40px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.avatar-ring::before{
+  content:""; position:absolute; inset:-2px; border-radius:inherit; padding:2px;
+  background: conic-gradient(from 0deg, var(--accent), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: spin-border 6s linear infinite;
+  opacity:.9; pointer-events:none;
+}
+
+/* ==== Tecnologías (pebbles) — compactación dura por viewport ==== */
+@media (max-width: 390px){
+  .pile{ transform: scale(.82); transform-origin: left top; }
+  .pile-row{ gap: .375rem; } /* ~gap-1.5 */
+  .pile-row:not(:first-child){ margin-top: -20px; }
+  .pebble{ font-size: 10px; padding: 3px 6px; }
+  .pebble-icon{ width: 22px; height: 22px; }
+  .pebble-icon > i{ font-size: 12px; }
+}
+
+@media (max-width: 360px){
+  .pile{ transform: scale(.75); }
+  .pile-row{ gap: .35rem; }
+  .pile-row:not(:first-child){ margin-top: -18px; }
+  .pebble{ font-size: 9.5px; padding: 3px 6px; }
+  .pebble-icon{ width: 20px; height: 20px; }
+  .pebble-icon > i{ font-size: 11px; }
+}
+
+@media (max-width: 330px){
+  .pile{ transform: scale(.68); }
+  .pile-row{ gap: .25rem; }
+  .pile-row:not(:first-child){ margin-top: -16px; }
+  .pebble{ font-size: 9px; padding: 2px 4px; }
+  .pebble-icon{ width: 18px; height: 18px; }
+  .pebble-icon > i{ font-size: 10px; }
+}
+/* Tecnologías: escalado fluido basado en viewport */
+.tech-wrap { position: relative; }
+.tech-scale {
+  transform-origin: left top;
+  /* padding horizontal aprox. de tu container: 40px (px-5/px-8) */
+  --content-w: calc(100vw - 40px);
+  /* 720px es el ancho “natural” de la pila; ajusta si lo deseas */
+  --ratio: calc(var(--content-w) / 720);
+  transform: scale(clamp(0.66, var(--ratio), 1));
+}
+@media (min-width: 768px){
+  .tech-scale { transform: none; } /* desktop sin escala */
+}
+
+/* ==== Tecnologías — móviles sin scroll (con animación) ==== */
+section#tecnologias .pile-row{ gap:.5rem; }
+section#tecnologias .pile-row:not(:first-child){ margin-top:-22px; }
+
+@media (max-width: 480px){
+  section#tecnologias .pile{ transform: none; } /* sin escalado global */
+  section#tecnologias .pile-row{ gap:.35rem; }
+  section#tecnologias .pile-row:not(:first-child){ margin-top:-18px; }
+
+  section#tecnologias .pebble{
+    font-size:10px !important;
+    padding:4px 6px !important;
+  }
+  section#tecnologias .pebble-icon{ width:18px; height:18px; }
+  section#tecnologias .pebble-icon > i{ font-size:12px; }
+}
+
+@media (max-width: 360px){
+  section#tecnologias .pile-row{ gap:.25rem; }
+  section#tecnologias .pile-row:not(:first-child){ margin-top:-16px; }
+
+  section#tecnologias .pebble{
+    font-size:9px !important;
+    padding:3px 5px !important;
+  }
+  section#tecnologias .pebble-icon{ width:16px; height:16px; }
+  section#tecnologias .pebble-icon > i{ font-size:10px; }
+}
+
+/* Asegura que no quede ningún escalado previo activo */
+.pile{ transform:none; }
+.tech-wrap, .tech-scale{ transform:none; }
+
+/* Compactación extra en móviles muy pequeños */
+@media (max-width: 390px){
+  .pile-row{ gap:.6rem; }
+  .pebble{ font-size: 12px; padding: .45rem .7rem; }
+  .pebble .pebble-icon{ width:24px; height:24px; }
+}
+@media (max-width: 360px){
+  .pile-row{ gap:.5rem; }
+  .pebble{ font-size: 11px; padding: .4rem .6rem; }
+  .pebble .pebble-icon{ width:22px; height:22px; }
+}
+@media (max-width: 330px){
+  .pile-row{ gap:.4rem; }
+  .pebble{ font-size: 10.5px; padding: .35rem .55rem; }
+  .pebble .pebble-icon{ width:20px; height:20px; }
+}
