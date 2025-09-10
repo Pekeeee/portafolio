@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       to,                    // puede ser string o string[]
       subject: `Portafolio | ${name}`,
       html,
-      reply_to: email,       // para que puedas responder directo
+      replyTo: email,       // para que puedas responder directo
     })
 
     if (error) {
