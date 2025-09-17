@@ -100,6 +100,13 @@ const projects: Project[] = [
     image: '/projects/contable.jpg',
     demo: 'https://drive.google.com/drive/folders/1D7ZkaR2P_X8ow41rv4DVNOZ44vRfh4Ld?usp=sharing',
   },
+  {
+    title: 'Portafolio Emily',
+    description: 'Portafolio personal de Emily con proyectos y habilidades.',
+    stack: ['Tailwind', 'HTML', 'CSS', 'JavaScript'],
+    image: '/projects/portafolio.png',
+    demo: 'https://pekeeee.github.io/emilyportafolio/index.html',
+  },
 ]
 
 const clients: Client[] = [
