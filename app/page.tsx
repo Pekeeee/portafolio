@@ -107,12 +107,21 @@ const projects: Project[] = [
     image: '/projects/portafolio.png',
     demo: 'https://pekeeee.github.io/emilyportafolio/index.html',
   },
+  {
+    title: 'Sparta Laxion',
+    description: 'Pagina web para agencia de influencers',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    image: '/projects/sparta.png',
+    demo: 'https://spartalaxion.com/',
+  },
 ]
 
 const clients: Client[] = [
   { name: 'AMADTECH', url: 'https://amadtechstore.com', logo: '/clients/amadtech.png' },
   { name: 'Casseg Ingenieria', url: 'https://cassegingenieria.com/', logo: '/clients/casseg.png' },
   { name: 'CHOP CHOP', url: 'https://chopchop.com/', logo: '/clients/chopchop.png' },
+  { name: 'SPARTA LAXION', url: 'https://spartalaxion.com/', logo: '/clients/sparta.png' },
+
 ]
 
 // (si lo llegas a usar más adelante)
