@@ -11,23 +11,33 @@ export const metadata: Metadata = {
     'Soy Alejandro AMAD, programador y desarrollador web en Irapuato. Especialista en sistemas a medida, e-commerce y plataformas completas con Next.js, Node.js y MySQL.',
   metadataBase: new URL(siteUrl),
   alternates: { canonical: '/' },
+
   openGraph: {
     type: 'website',
-    url: '/',
+    url: '/', // con metadataBase esto queda absoluto
+    siteName: 'Alejandro AMAD — Portafolio',
+    locale: 'es_MX',
     title: 'Programador en Irapuato — Alejandro AMAD | Full-Stack Developer',
     description:
       'Desarrollador web full-stack. Sistemas a medida, e-commerce y plataformas completas con Next.js, Node.js y MySQL.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Alejandro AMAD — Portafolio' }],
-    siteName: 'Alejandro AMAD — Portafolio',
-    locale: 'es_MX',
+    images: [
+      {
+        url: '/og-amad.jpg',          // ✅ en /public
+        width: 1200,
+        height: 630,
+        alt: 'AMAD Software Solutions — Alejandro AMAD',
+      },
+    ],
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'Programador en Irapuato — Alejandro AMAD | Full-Stack Developer',
     description:
       'Desarrollador web full-stack. Sistemas a medida, e-commerce y plataformas completas con Next.js, Node.js y MySQL.',
-    images: ['/og.png'],
+    images: ['/og-amad.jpg'],         // ✅ sin /public
   },
+
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -37,6 +47,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
     shortcut: '/favicon.ico',
   },
+
   robots: {
     index: true,
     follow: true,
@@ -48,6 +59,7 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+
   themeColor: '#0b0e12',
 }
 
@@ -59,7 +71,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     jobTitle: 'Full-Stack Developer',
     url: siteUrl,
     sameAs: [
-      // Sustituye por tus enlaces reales:
       'https://github.com/tuusuario',
       'https://www.linkedin.com/in/tuusuario',
     ],
@@ -86,13 +97,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <head>
-        {/* DEVICON CDN */}
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css"
         />
-
-        {/* Schema.org JSON-LD */}
         <script
           type="application/ld+json"
           suppressHydrationWarning
